@@ -7,7 +7,7 @@ Voinko suorittaa kurssin itsenäisesti? Töitten takia tulee olemaan sekava aika
 
 * Käyttäjän luominen
 * Sisään- ja uloskirjautuminen
-* Uuden keskustelualueen luominen
+* Uuden keskustelualueen luominen ja siihen osallistuminen 
 * Keskustelualueet tulevat olemaan joko julkisia tai salanasanalla suojattu
 * Hakusysteemi eri aiheille
 * Moderaattorit voivat poistaa kokonaisia palstoja ja viestejä
