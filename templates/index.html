@@ -1,0 +1,52 @@
+{%extends 'base.html'%}
+
+{% block title %}Home page{% endblock %}
+{% block content %}
+    <div class = "container">
+      <br/>
+        <div class="row">
+          <div class="col-10">
+            {% if session.user_id %}
+              <h1>Hello, {{ username }}</h1>
+            {% else %}
+              <h1>Hello world!</h1>
+            {% endif %}
+          </div>
+          {% if error_statement %}
+              <div class="alert alert-danger" role="alert">
+                {{ error_statement }}
+              </div>
+            {% endif %}
+          <div class="col-2">
+            {% if session.user_id %}
+              <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                  Create new thread
+                </button>
+                <div class="dropdown-menu" style="max-width: 600px;">
+                  <form class="px-4 py-3" action="/threadcreated" method="POST">
+                    <div class="mb-3">
+                      <input type="text" class="form-control" id="threadtext" placeholder="Title" name="threadtitle">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                  </form>
+                </div>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      <br/>
+      <div class="list-group">
+          {% for thread in list_of_threads %}
+          <a href="{{ url_for('thread', id=thread.id) }}" class="list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between">
+              <h5 class="mb-1">{{ thread.title }}</h5>
+              <small class="text-muted">{{ thread.created }}</small>
+            </div>
+            <small class="text-muted">{{ thread.username }}</small>
+          </a>
+          {% endfor %}
+      </div>
+    </div>
+    <br/>
+{% endblock %}

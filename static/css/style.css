@@ -1,0 +1,19 @@
+h1{
+	color:  white;
+	-webkit-text-stroke: 1px black;
+}
+hr{
+	color:  white;
+}
+body{
+	background:  darkslategray;
+}
+p{
+	color:  white;
+}
+label{
+	color: white;
+}
+.dropdown-menu {
+    width: 400px;
+}
