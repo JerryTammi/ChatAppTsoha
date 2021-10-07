@@ -241,6 +241,8 @@ def admin_user_page():
 @app.route("/search", methods=["POST", "GET"])
 def search():
 	user_id = users.user_id()
+	if user_id == 0:
+		return render_template("search.html")
 	admin = users.check_if_admin(user_id)
 	if request.method == "GET":
 		return render_template("search.html", admin = admin)

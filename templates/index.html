@@ -27,7 +27,7 @@
           <a href="{{ url_for('thread', id=thread.id) }}" class="list-group-item list-group-item-action">
               <div class="d-flex w-100 justify-content-between">
               <h5 class="mb-1">{{ thread.title }}</h5>
-              <small class="text-muted">{{ thread.created }}</small>
+              <small class="text-muted">{{ thread.last_updated.strftime("%d.%m.%Y %H:%M:%S") }}</small>
             </div>
             <small class="text-muted">{{ thread.username }}</small>
           </a>

@@ -34,3 +34,9 @@ CREATE TABLE banned_words (
 	id SERIAL PRIMARY KEY, 
 	content TEXT
 );
+
+CREATE TABLE ban_appeal (
+	id SERIAL PRIMARY KEY, 
+	user_id REFERENCES users, 
+	content TEXT
+);

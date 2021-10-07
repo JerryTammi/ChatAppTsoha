@@ -51,3 +51,8 @@ def search(content):
 	result = db.session.execute(sql, {"content":"%"+content+"%"})
 	threads = result.fetchall()
 	return threads
+
+def update_last_updated(id):
+	sql = "UPDATE message_threads SET last_updated=NOW() WHERE id=:id"
+	db.session.execute(sql, {"id":id})
+	db.session.commit()

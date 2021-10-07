@@ -1,5 +1,5 @@
 from db import db
-import users 
+import users, threads 
 
 def get_list(thread_id):
 	sql = "SELECT M.content, U.username, M.sent_at, M.id, M.user_id, U.is_admin FROM messages M, users U WHERE (M.user_id=U.id AND M.deleted=False AND U.banned=False AND M.message_thread_id=:thread_id) ORDER BY M.sent_at"
@@ -22,6 +22,7 @@ def new_message(content, message_thread_id):
 		sql = "INSERT INTO messages (content, user_id, message_thread_id, sent_at, deleted) VALUES (:content, :user_id, :message_thread_id, NOW(), False)"
 		db.session.execute(sql, {"content":content, "user_id":user_id, "message_thread_id":message_thread_id})
 		db.session.commit()
+		threads.update_last_updated(message_thread_id)
 		return True 
 
 def delete_message(id):
@@ -49,7 +50,7 @@ def edit_message(id, content):
 	return False
 
 def search(content):
-	sql = "SELECT M.content, T.title, T.id FROM messages M, message_threads T WHERE (content LIKE :content AND T.id=M.message_thread_id AND deleted=False)"
+	sql = "SELECT M.content, T.title, T.id FROM messages M, message_threads T WHERE (content LIKE :content AND T.id=M.message_thread_id AND M.deleted=False AND T.deleted=False)"
 	result = db.session.execute(sql, {"content":"%"+content+"%"})
 	messages = result.fetchall()
 	return messages
