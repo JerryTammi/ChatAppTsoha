@@ -240,9 +240,21 @@ def admin_user_page():
 
 @app.route("/search", methods=["POST", "GET"])
 def search():
-	search_content = request.form.get("search_content")
-	if not search_content:
-		return redirect("/")
+	user_id = users.user_id()
+	admin = users.check_if_admin(user_id)
+	if request.method == "GET":
+		return render_template("search.html", admin = admin)
+	else:
+		search_content = request.form.get("search_content")
+		if not search_content:
+			return redirect("/search")
+		search_users = users.search(search_content)
+		search_threads = threads.search(search_content)
+		search_messages = messages.search(search_content)
+		show_results = True
+		return render_template("search.html",
+		 search_users = search_users, search_threads = search_threads, 
+		 search_messages = search_messages, search_content = search_content, show_results = show_results, admin = admin)
 
 def default_homepage_with_error(error_statement):
 	list = threads.get_list_of_threads()

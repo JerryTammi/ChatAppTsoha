@@ -47,4 +47,10 @@ def edit_message(id, content):
 		db.session.commit()
 		return True
 	return False
+
+def search(content):
+	sql = "SELECT M.content, T.title, T.id FROM messages M, message_threads T WHERE (content LIKE :content AND T.id=M.message_thread_id AND deleted=False)"
+	result = db.session.execute(sql, {"content":"%"+content+"%"})
+	messages = result.fetchall()
+	return messages
 	

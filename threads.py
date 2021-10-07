@@ -45,3 +45,9 @@ def delete_thread(id):
 		db.session.commit()
 		return True
 	return False
+
+def search(content):
+	sql = "SELECT title, id FROM message_threads WHERE (title LIKE :content AND deleted=False)"
+	result = db.session.execute(sql, {"content":"%"+content+"%"})
+	threads = result.fetchall()
+	return threads

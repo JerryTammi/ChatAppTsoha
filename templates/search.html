@@ -7,10 +7,42 @@
 {% block content %}
     <div class = "container">
       <br/>
+      {% if show_results %}
       <h1>Search results</h1>
+      {% else %}
+      <h1>Search</h1>
+      {% endif %}
     </div>
     <br/>
     <div class = "container">
-      
+      <form action="/search" method="POST">
+        <div class="mb-3">
+          <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name ="search_content" placeholder="Search" value ="{{ search_content }}"></textarea>
+        </div>
+        <button type="submit" class="btn btn-success">Search</button>
+      </form>
     </div>
+    </br>
+    {% if show_results %}
+    <div class = "container">
+      <h4>Users:</h4>
+      {% for user in search_users %}
+      <p>{{ user.username }}</p>
+      {% endfor %}
+      <br/>
+
+      <h4>Threads:</h4>
+      {% for thread in search_threads %}
+      <a href="{{ url_for('thread', id=thread.id) }}">{{ thread.title }}</a>
+      {% endfor %}
+      <br/>
+
+      <h4>Messages:</h4>
+      {% for message in search_messages %}
+      <a href="{{ url_for('thread', id=message.id) }}">{{ message.title }}</a><p>{{ message.content }}</p>
+      {% endfor %}
+      <br/>
+
+    </div>
+    {% endif %}
 {% endblock %}

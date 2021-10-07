@@ -50,4 +50,10 @@ def get_list_of_users():
 	sql = "SELECT id, username, is_admin, banned FROM users" 
 	result = db.session.execute(sql)
 	return result.fetchall()
+
+def search(content):
+	sql = "SELECT username FROM users WHERE (username LIKE :content AND banned=False)"
+	result = db.session.execute(sql, {"content":"%"+content+"%"})
+	usernames = result.fetchall()
+	return usernames
 	
