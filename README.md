@@ -1,8 +1,5 @@
 # ChatAppTsoha 2021
 
-@ohjaaja
-Voinko suorittaa kurssin itsenäisesti? Töitten takia tulee olemaan sekava aikataulu
-
 ## Keskeiset toiminnot
 
 * Käyttäjän luominen
