@@ -1,0 +1,36 @@
+{%extends 'base.html'%}
+
+{% block title %}
+  Admin page
+{% endblock %}
+
+{% block content %}
+    <div class = "container">
+      <br/>
+      <h1>Users</h1>
+    </div>
+    <br/>
+    <div class = "container">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th scope="col">#id</th>
+            <th scope="col">username</th>
+            <th scope="col">is_admin</th>
+            <th scope="col">banned</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for user in users %}
+          <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.username }}</td>
+            <td>{{ user.is_admin }}</td>
+            <td>{{ user.banned }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <br/>
+    </div>
+{% endblock %}

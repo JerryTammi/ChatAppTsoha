@@ -1,0 +1,40 @@
+{%extends 'base.html'%}
+
+{% block title %}
+  Admin page
+{% endblock %}
+
+{% block content %}
+    <div class = "container">
+      <br/>
+      <h1>Admin page</h1>
+    </div>
+    <br/>
+    <div class = "container">
+      <div class="list-group">
+        <a href="{{ url_for('subsection') }}" class="list-group-item list-group-item-action">
+          <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">Thread subsections</h5>
+          </div>
+          <small class="text-muted">Inspect, create and delete subsections</small>
+        </a>
+      </div>
+      <div class="list-group">
+        <a href="{{ url_for('admin_user_page') }}" class="list-group-item list-group-item-action">
+          <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">Inspect users</h5>
+          </div>
+          <small class="text-muted">View all users, ban and unban users</small>
+        </a>
+      </div>
+      <div class="list-group">
+        <a href="" class="list-group-item list-group-item-action">
+          <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">Banned content</h5>
+          </div>
+          <small class="text-muted">Ban and unban contents of messages and threads</small>
+        </a>
+      </div>
+      <br/>
+    </div>
+{% endblock %}

@@ -1,14 +1,26 @@
 {%extends 'base.html'%}
 
 {% block title %}
-  About page
+  {{ thread_details[0].title }}
 {% endblock %}
 
 {% block content %}
 <div class = "container">
   <br/>
   <h1>{{ thread_details[0].title }}</h1>
+  {% if error_statement %}
+  <div class="alert alert-danger" role="alert">
+  {{ error_statement }}
+  </div>
+  {% endif %}
   <p>Thread created: {{ thread_details[0].created }} by {{ thread_details[0].username }}</p>
+  {% if thread_details[0].user_id == session.user_id or admin %}
+  <form action="/deletethread" method="POST">
+    <input type="hidden" name="thread_id" value="{{ id }}">
+    <button type="submit" class="btn btn-danger">Nuke thread</button>
+  </form>
+  <br/>
+  {% endif %}
 </div>
 <div class = "container">
   <ol class="list-group list-group-numbered">
@@ -18,16 +30,38 @@
         {{ message.content }}
         <div class="fw-bold">{{ message.username }}</div>
         {{ message.sent_at }}
+
+        {% if message.user_id == session.user_id%}
+        <div class="dropdown">
+          <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></button>
+          <div class="dropdown-menu">
+            <form action="/editmessage" method="POST">
+              <input type="hidden" name="thread_id" value="{{ id }}">
+              <textarea class="form-control" id="exampleFormControlTextarea1" rows="7" name ="editmessage_content" placeholder="Edit message"></textarea>
+              <input type="hidden" name="message_id" value="{{ message.id }}">
+              <button type="submit" class="btn btn-success">Edit message</button>
+            </form>
+          </div>
+        </div>
+        {% endif %}
+
       </div>
+      {% if message.user_id == session.user_id or admin %}
+      <form action="/deletemessage" method="POST">
+        <input type="hidden" name="thread_id" value="{{ id }}">
+        <input type="hidden" name="message_id" value="{{ message.id }}">
+        <button type="submit" class="btn btn-danger">X</button>
+      </form>
+      {% endif %}
     </li>
     {% endfor %}
   </ol>
+  <br/>
   {% if session.user_id %}
   <form action="/send" method="POST">
     <input type="hidden" name="id" value="{{ id }}">
     <div class="mb-3">
-      <label for="exampleFormControlTextarea1" class="form-label">New message:</label>
-      <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name ="content"></textarea>
+      <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name ="content" placeholder="New message"></textarea>
     </div>
     <button type="submit" class="btn btn-success">Send message</button>
   </form>

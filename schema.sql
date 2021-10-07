@@ -6,10 +6,16 @@ CREATE TABLE users (
 	banned BOOLEAN
 );
 
+CREATE TABLE thread_subsections (
+	id SERIAL PRIMARY KEY, 
+	title TEXT
+);
+
 CREATE TABLE message_threads (
 	id SERIAL PRIMARY KEY, 
 	title TEXT, 
 	user_id INTEGER REFERENCES users, 
+	thread_subsection_id INTEGER REFERENCES thread_divisions, 
 	created TIMESTAMP, 
 	last_updated TIMESTAMP, 
 	deleted BOOLEAN
@@ -25,5 +31,6 @@ CREATE TABLE messages (
 );
 
 CREATE TABLE banned_words (
-
+	id SERIAL PRIMARY KEY, 
+	content TEXT
 );

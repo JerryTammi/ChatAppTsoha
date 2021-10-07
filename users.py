@@ -36,3 +36,18 @@ def get_username(id):
 	result = db.session.execute(sql, {"id":id})
 	username = result.fetchone()[0]
 	return username
+
+def check_if_admin(id):
+	sql = "SELECT is_admin FROM users WHERE id=:id"
+	result = db.session.execute(sql, {"id":id})
+	admin = result.fetchone()[0]
+	if not admin:
+		return False 
+	else:
+		return True 
+
+def get_list_of_users():
+	sql = "SELECT id, username, is_admin, banned FROM users" 
+	result = db.session.execute(sql)
+	return result.fetchall()
+	

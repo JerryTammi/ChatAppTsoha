@@ -1,4 +1,4 @@
-{%extends 'base.html'%}
+{% extends 'base.html' %}
 
 {% block title %}Home page{% endblock %}
 {% block content %}
@@ -7,7 +7,7 @@
         <div class="row">
           <div class="col-10">
             {% if session.user_id %}
-              <h1>Hello, {{ username }}</h1>
+              <h1>{{ username }}</h1>
             {% else %}
               <h1>Hello world!</h1>
             {% endif %}
@@ -17,36 +17,32 @@
                 {{ error_statement }}
               </div>
             {% endif %}
-          <div class="col-2">
-            {% if session.user_id %}
-              <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                  Create new thread
-                </button>
-                <div class="dropdown-menu" style="max-width: 600px;">
-                  <form class="px-4 py-3" action="/threadcreated" method="POST">
-                    <div class="mb-3">
-                      <input type="text" class="form-control" id="threadtext" placeholder="Title" name="threadtitle">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                  </form>
-                </div>
-              </div>
-            {% endif %}
-          </div>
         </div>
       <br/>
+      {% for subsection in subsections %}
+      <h4>{{ subsection.title }}</h4>
       <div class="list-group">
-          {% for thread in list_of_threads %}
+        {% for thread in list_of_threads %}
+          {% if subsection.id == thread.thread_subsection_id %}
           <a href="{{ url_for('thread', id=thread.id) }}" class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-between">
+              <div class="d-flex w-100 justify-content-between">
               <h5 class="mb-1">{{ thread.title }}</h5>
               <small class="text-muted">{{ thread.created }}</small>
             </div>
             <small class="text-muted">{{ thread.username }}</small>
           </a>
-          {% endfor %}
+          {% endif %}
+        {% endfor %}
+        <br/>
+        {% if session.user_id %}
+        <form action="/submit" method="POST">
+          <input type="hidden" name="subsection_id" value="{{ subsection.id }}">
+          <button type="submit" class="btn btn-primary">New thread</button>
+        </form>
+        {% endif %}
+        <br/>
       </div>
-    </div>
+      <br/>
+      {% endfor %}
     <br/>
 {% endblock %}

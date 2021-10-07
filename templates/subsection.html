@@ -1,0 +1,26 @@
+{%extends 'base.html'%}
+
+{% block title %}
+  Subsections
+{% endblock %}
+
+{% block content %}
+    <div class = "container">
+      <br/>
+      <h1>Subsections</h1>
+    </div>
+    <br/>
+    <div class = "container">
+      <ul>
+      {% for subsection in list %}
+      <li><p>{{ subsection.title }}</p></li>
+      {% endfor %}
+      </ul>
+    <form action="/subsection" method="POST">
+      <input type="hidden" name="id" value="{{ id }}">
+      <div class="mb-3">
+        <textarea class="form-control" rows="3" name ="title" placeholder="Subsection title"></textarea>
+      </div>
+      <button type="submit" class="btn btn-success">Create</button>
+  </form>
+{% endblock %}
