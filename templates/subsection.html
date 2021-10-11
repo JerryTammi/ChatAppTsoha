@@ -28,6 +28,7 @@
             <td>
               <form action="/admin/subsection/delete" method="POST">
                 <input type="hidden" name="subsection_id" value="{{ subsection.id }}">
+                <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
                 <button type="submit" class="btn btn-danger">Delete</button>
               </form>
             </td>
@@ -41,6 +42,7 @@
       <div class="mb-3">
         <textarea class="form-control" rows="3" name ="title" placeholder="Subsection title"></textarea>
       </div>
+      <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
       <button type="submit" class="btn btn-success">Create</button>
   </form>
 {% endblock %}

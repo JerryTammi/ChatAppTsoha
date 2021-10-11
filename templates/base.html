@@ -30,7 +30,7 @@
             </li>
           </ul>
           <a class="nav-link" href="{{ url_for('search')}}">Search</a>
-          {% if admin %}
+          {% if session.admin %}
           <a class="nav-link" href="{{ url_for('admin')}}">Admin</a>
           {% endif %}
           {% if session.user_id %}

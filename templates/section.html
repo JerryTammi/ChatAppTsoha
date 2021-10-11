@@ -24,6 +24,7 @@
       {% if session.user_id %}
         <form action="/submit" method="POST">
           <input type="hidden" name="subsection_id" value="{{ id }}">
+          <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
           <button type="submit" class="btn btn-primary">New thread</button>
         </form>
         {% endif %}

@@ -18,6 +18,7 @@
       <div class="form-group">
           <input type="text" class="form-control" placeholder="Title" name="title">
       </div>
+      <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
       <br/>
       <button type="submit" class="btn btn-success">Create</button>
   </form>

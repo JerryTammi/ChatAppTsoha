@@ -2,7 +2,7 @@ from app import app
 from flask import redirect, render_template, request, session
 import users, threads, messages, thread_subsections, ban_appeals
 
-@app.route("/", methods=["GET","POST"])
+@app.route("/")
 def index():
 	list = threads.get_list_of_threads()
 	subsections = thread_subsections.get_list_of_subsections()
@@ -12,8 +12,7 @@ def index():
 	if is_user_banned():
 		return redirect("/banned")
 	user = users.get_username(user_id)
-	admin = users.check_if_admin(user_id)
-	return render_template("index.html", list_of_threads = list, username = user, admin = admin, subsections = subsections)
+	return render_template("index.html", list_of_threads = list, username = user, subsections = subsections)
 	
 @app.route("/login", methods=["GET","POST"])
 def login():
@@ -50,7 +49,7 @@ def accountcreated():
 	if request.method == "GET":
 		error_statement = "You shouldn't go there ;)"
 		return default_homepage_with_error(error_statement)
-	else:
+	if request.method == "POST":
 		username = request.form.get("username")
 		password1 = request.form.get("password1")
 		password2 = request.form.get("password2")
@@ -89,8 +88,7 @@ def about():
 		return render_template("about.html")
 	if is_user_banned():
 		return redirect("/banned")
-	admin = users.check_if_admin(user_id)
-	return render_template("about.html", admin = admin)
+	return render_template("about.html")
 
 @app.route("/logout")
 def logout():
@@ -101,7 +99,7 @@ def logout():
 	users.logout()
 	return render_template("logout.html")
 
-@app.route("/thread/<int:id>", methods=["POST", "GET"])
+@app.route("/thread/<int:id>")
 def thread(id):
 	if not threads.does_thread_exist(id):
 		error_statement = "Thread does not exist"
@@ -111,21 +109,20 @@ def thread(id):
 	if not threads.does_thread_exist(id):
 		error_statement = "Thread not found"
 		return default_homepage_with_error(error_statement)
-	else:
-		user_id = users.user_id()
-		if user_id == 0:
-			return render_template("thread.html", id=id, messages=list, thread_details = thread_details)
-		if is_user_banned():
-			return redirect("/banned")
-		admin = users.check_if_admin(user_id)
-		return render_template("thread.html", id=id, messages=list, thread_details = thread_details, admin = admin)
+	user_id = users.user_id()
+	if user_id == 0:
+		return render_template("thread.html", id=id, messages=list, thread_details = thread_details)
+	if is_user_banned():
+		return redirect("/banned")
+	return render_template("thread.html", id=id, messages=list, thread_details = thread_details)
 
 @app.route("/threadcreated", methods=["POST", "GET"])
 def threadcreated():
 	if request.method == "GET":
 		error_statement = "You shouldn't go there ;)"
 		return default_homepage_with_error(error_statement)
-	else:
+	if request.method == "POST":
+		check_csrf()
 		title = request.form.get("title")
 		subsection_id = request.form.get("subsection_id")
 		if not title:
@@ -146,7 +143,8 @@ def send():
 	if request.method == "GET":
 		error_statement = "You shouldn't go there ;)"
 		return default_homepage_with_error(error_statement)
-	else:
+	if request.method == "POST":
+		check_csrf()
 		content = request.form.get("content")
 		thread_id = request.form.get("id")
 		if len(content) == 0:
@@ -172,11 +170,11 @@ def subsection():
 	if user_id == 0 or not users.check_if_admin(user_id):
 		error_statement = "You shouldn't go there ;)"
 		return default_homepage_with_error(error_statement)
-	admin = users.check_if_admin(user_id)
 	if request.method == "GET":
 		list = thread_subsections.get_list_of_subsections()
-		return render_template("subsection.html", list = list, admin = admin)
+		return render_template("subsection.html", list = list)
 	if request.method == "POST":
+		check_csrf()
 		title = request.form.get("title")
 		if not title:
 			return redirect("/admin/subsection")
@@ -191,8 +189,8 @@ def delete_subsection():
 	if user_id == 0 or not users.check_if_admin(user_id) or request.method == "GET":
 		error_statement = "You shouldn't go there ;)"
 		return default_homepage_with_error(error_statement)
-	admin = users.check_if_admin(user_id)
 	if request.method == "POST":
+		check_csrf()
 		subsection_id = request.form.get("subsection_id")
 		if not subsection_id:
 			return redirect("/admin/subsection")
@@ -205,6 +203,7 @@ def submit():
 		error_statement = "You shouldn't go there ;)"
 		return default_homepage_with_error(error_statement)
 	if request.method == "POST":
+		check_csrf()
 		subsection_id = request.form.get("subsection_id")
 		return render_template("submit.html", subsection_id = subsection_id)
 
@@ -214,6 +213,7 @@ def deletemessage():
 		error_statement = "You shouldn't go there ;)"
 		return default_homepage_with_error(error_statement)
 	if request.method == "POST":
+		check_csrf()
 		message_id = request.form.get("message_id")
 		thread_id = request.form.get("thread_id")
 		messages.delete_message(message_id)
@@ -224,7 +224,8 @@ def editmessage():
 	if request.method == "GET":
 		error_statement = "You shouldn't go there ;)"
 		return default_homepage_with_error(error_statement)
-	else:
+	if request.method == "POST":
+		check_csrf()
 		message_id = request.form.get("message_id")
 		thread_id = request.form.get("thread_id")
 		content = request.form.get("editmessage_content")
@@ -238,7 +239,8 @@ def deletethread():
 	if request.method == "GET":
 		error_statement = "You shouldn't go there ;)"
 		return default_homepage_with_error(error_statement)
-	else:
+	if request.method == "POST":
+		check_csrf()
 		thread_id = request.form.get("thread_id")
 		threads.delete_thread(thread_id)
 		return redirect("/")
@@ -249,9 +251,8 @@ def admin_user_page():
 	if id == 0 or not users.check_if_admin(id):
 		error_statement = "You shouldn't go there ;)"
 		return default_homepage_with_error(error_statement)
-	else:
-		list = users.get_list_of_users()
-		return render_template("adminusers.html", users = list, admin = users.check_if_admin(id))
+	list = users.get_list_of_users()
+	return render_template("adminusers.html", users = list, admin = users.check_if_admin(id))
 
 @app.route("/admin/appeals", methods=["POST", "GET"])
 def admin_appeal_page():
@@ -260,10 +261,10 @@ def admin_appeal_page():
 		if id == 0 or not users.check_if_admin(id):
 			error_statement = "You shouldn't go there ;)"
 			return default_homepage_with_error(error_statement)
-		else:
-			list = ban_appeals.get_list()
-			return render_template("adminappeals.html", appeals = list, admin = users.check_if_admin(id))
-	else:
+		list = ban_appeals.get_list()
+		return render_template("adminappeals.html", appeals = list, admin = users.check_if_admin(id))
+	if request.method == "POST":
+		check_csrf()
 		banned_user = request.form.get("banned_user")
 		ban_appeals.solve(banned_user)
 		users.ban_unban(banned_user)
@@ -279,6 +280,8 @@ def search():
 	if request.method == "GET":
 		return render_template("search.html", admin = users.check_if_admin(user_id))
 	if request.method == "POST":
+		if user_id != 0:
+			check_csrf()
 		search_content = request.form.get("search_content")
 		if not search_content:
 			return redirect("/search")
@@ -286,31 +289,24 @@ def search():
 		search_threads = threads.search(search_content)
 		search_messages = messages.search(search_content)
 		show_results = True
-		if user_id == 0:
-			return render_template("search.html",
-		 search_users = search_users, search_threads = search_threads, 
-		 search_messages = search_messages, search_content = search_content, show_results = show_results)
 		return render_template("search.html",
 		 search_users = search_users, search_threads = search_threads, 
-		 search_messages = search_messages, search_content = search_content, show_results = show_results, admin = users.check_if_admin(user_id))
+		 search_messages = search_messages, search_content = search_content, 
+		 show_results = show_results)
 
 @app.route("/section/<int:id>")
 def section(id):
 	if not thread_subsections.does_subsection_exist(id) or thread_subsections.is_deleted(id):
 		error_statement = "You shouldn't go there ;)"
 		return default_homepage_with_error(error_statement)
-	else:
-		list = threads.get_threads_subsection(id)
-		title = thread_subsections.get_title(id)
-		user_id = users.user_id()
-		if user_id == 0:
-			return render_template("section.html", list = list, title = title)
-		if is_user_banned():
-			return redirect("/banned")
-		admin = users.check_if_admin(user_id)
-		if not admin:
-			return render_template("section.html", list = list, title = title, id = id)
-		return render_template("section.html", list = list, title = title, admin = admin, id = id)
+	list = threads.get_threads_subsection(id)
+	title = thread_subsections.get_title(id)
+	user_id = users.user_id()
+	if user_id == 0:
+		return render_template("section.html", list = list, title = title)
+	if is_user_banned():
+		return redirect("/banned")
+	return render_template("section.html", list = list, title = title, id = id)
 		
 @app.route("/ban", methods = ["POST", "GET"])
 def ban():
@@ -318,11 +314,11 @@ def ban():
 	if user_id == 0 or not users.check_if_admin(user_id):
 		error_statement = "You shouldn't go there ;)"
 		default_homepage_with_error(error_statement)
-	admin = users.check_if_admin(user_id)
 	if request.method == "GET":
 		error_statement = "You shouldn't go there ;)"
 		default_homepage_with_error(error_statement)
 	if request.method == "POST":
+		check_csrf()
 		ban_unban = request.form.get("user_id")
 		users.ban_unban(ban_unban)
 		return redirect("/admin/users")
@@ -337,6 +333,7 @@ def banned():
 		appeal = ban_appeals.check_pending_appeal(user_id)
 		return render_template("banned.html", appeal = appeal)
 	if request.method == "POST":
+		check_csrf()
 		appeal_content = request.form.get("appeal_content")
 		if len(appeal_content) == 0 or len(appeal_content) > 1000:
 			return redirect("/banned")
@@ -366,3 +363,7 @@ def default_homepage_with_error(error_statement):
 		return render_template("index.html", list_of_threads = list, username = user, 
 			error_statement = error_statement, admin = admin, subsections = subsections)
 
+def check_csrf():
+	if session["csrf_token"] != request.form["csrf_token"]:
+		error_statement = "You shouldn't go there ;)"
+		return default_homepage_with_error(error_statement)

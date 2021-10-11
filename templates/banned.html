@@ -18,6 +18,7 @@
         <div class="mb-3">
           <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name ="appeal_content" value ="{{ appeal_content }}"></textarea>
         </div>
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
         <button type="submit" class="btn btn-success">Pray for mercy</button>
       </form>
       {% else %}

@@ -32,6 +32,7 @@
             <td>
               <form action="/ban" method="POST">
                 <input type="hidden" name="user_id" value="{{ user.id }}">
+                <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
                 <button type="submit" class="btn btn-success">Unban</button>
               </form>
             </td>
@@ -40,6 +41,7 @@
             <td>
               <form action="/ban" method="POST">
                 <input type="hidden" name="user_id" value="{{ user.id }}">
+                <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
                 <button type="submit" class="btn btn-danger">Ban</button>
               </form>
             </td>
