@@ -1,5 +1,5 @@
 from db import db
-import users
+import users, thread_subsections
 
 def new_thread(title, thread_subsection_id):
 	user_id = users.user_id()
@@ -14,6 +14,11 @@ def new_thread(title, thread_subsection_id):
 def get_list_of_threads():
 	sql = "SELECT M.id, M.title, M.user_id, M.created, U.username, M.last_updated, M.thread_subsection_id FROM message_threads M, users U WHERE (M.user_id=U.id AND M.deleted=False) ORDER BY M.created DESC"
 	result = db.session.execute(sql)
+	return result.fetchall()
+
+def get_threads_subsection(id):
+	sql = "SELECT M.id, M.title, M.user_id, M.created, U.username, M.last_updated, M.thread_subsection_id FROM message_threads M, users U WHERE (M.user_id=U.id AND M.deleted=False AND M.thread_subsection_id=:id) ORDER BY M.created DESC"
+	result = db.session.execute(sql, {"id":id})
 	return result.fetchall()
 
 def get_thread_details(id):

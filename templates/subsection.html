@@ -11,12 +11,32 @@
     </div>
     <br/>
     <div class = "container">
-      <ul>
-      {% for subsection in list %}
-      <li><p>{{ subsection.title }}</p></li>
-      {% endfor %}
-      </ul>
-    <form action="/subsection" method="POST">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th scope="col">#id</th>
+            <th scope="col">Title</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for subsection in list %}
+          {% if not subsection.deleted%}
+          <tr>
+            <td>{{ subsection.id }}</td>
+            <td>{{ subsection.title }}</td>
+            <td>
+              <form action="/admin/subsection/delete" method="POST">
+                <input type="hidden" name="subsection_id" value="{{ subsection.id }}">
+                <button type="submit" class="btn btn-danger">Delete</button>
+              </form>
+            </td>
+          </tr>
+          {% endif %}
+          {% endfor %}
+        </tbody>
+      </table>
+    <form action="/admin/subsection" method="POST">
       <input type="hidden" name="id" value="{{ id }}">
       <div class="mb-3">
         <textarea class="form-control" rows="3" name ="title" placeholder="Subsection title"></textarea>

@@ -6,7 +6,7 @@ def register(username, password, is_admin):
 	hash_value = generate_password_hash(password)
 	try:
 		sql = "INSERT INTO users (username, password, is_admin, banned) VALUES (:username, :password, :is_admin, False)"
-		db.session.execute(sql, {"username":username, "password":hash_value, "is_admin":is_admin, "banned":False})
+		db.session.execute(sql, {"username":username, "password":hash_value, "is_admin":is_admin})
 		db.session.commit()
 	except:
 		return False
@@ -41,10 +41,13 @@ def check_if_admin(id):
 	sql = "SELECT is_admin FROM users WHERE id=:id"
 	result = db.session.execute(sql, {"id":id})
 	admin = result.fetchone()[0]
-	if not admin:
-		return False 
-	else:
-		return True 
+	return admin
+
+def check_if_banned(id):
+	sql = "SELECT banned FROM users WHERE id=:id"
+	result = db.session.execute(sql, {"id":id})
+	banned = result.fetchone()[0]
+	return banned
 
 def get_list_of_users():
 	sql = "SELECT id, username, is_admin, banned FROM users" 
@@ -56,4 +59,16 @@ def search(content):
 	result = db.session.execute(sql, {"content":"%"+content+"%"})
 	usernames = result.fetchall()
 	return usernames
+
+def ban_unban(id):
+	if check_if_banned(id):
+		sql = "UPDATE users SET banned=False WHERE id=:id"
+		db.session.execute(sql, {"id":id})
+		db.session.commit()
+		return True
+	else:
+		sql = "UPDATE users SET banned=True WHERE id=:id"
+		db.session.execute(sql, {"id":id})
+		db.session.commit()
+		return True
 	

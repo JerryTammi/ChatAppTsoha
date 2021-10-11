@@ -8,7 +8,8 @@ CREATE TABLE users (
 
 CREATE TABLE thread_subsections (
 	id SERIAL PRIMARY KEY, 
-	title TEXT
+	title TEXT, 
+	deleted BOOLEAN
 );
 
 CREATE TABLE message_threads (
@@ -30,13 +31,9 @@ CREATE TABLE messages (
 	deleted BOOLEAN
 );
 
-CREATE TABLE banned_words (
+CREATE TABLE ban_appeals (
 	id SERIAL PRIMARY KEY, 
-	content TEXT
-);
-
-CREATE TABLE ban_appeal (
-	id SERIAL PRIMARY KEY, 
-	user_id REFERENCES users, 
-	content TEXT
+	user_id INTEGER REFERENCES users, 
+	content TEXT, 
+	solved BOOLEAN
 );

@@ -1,0 +1,27 @@
+{%extends 'base.html'%}
+
+{% block title %}
+  You have been banned
+{% endblock %}
+
+{% block content %}
+    <div class = "container">
+      <br/>
+      <h1>BANNED!</h1>
+    </div>
+    <br/>
+    <div class = "container">
+      {% if not appeal %}
+      <h4>Send ban appeal</h4>
+      <br/>
+      <form action="/banned" method="POST">
+        <div class="mb-3">
+          <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name ="appeal_content" value ="{{ appeal_content }}"></textarea>
+        </div>
+        <button type="submit" class="btn btn-success">Pray for mercy</button>
+      </form>
+      {% else %}
+      <h4>Ban appeal pending</h4>
+      {% endif %}
+    </div>
+{% endblock %}

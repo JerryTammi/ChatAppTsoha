@@ -1,0 +1,31 @@
+{%extends 'base.html'%}
+
+{% block title %}
+  Section
+{% endblock %}
+
+{% block content %}
+    <div class = "container">
+      <br/>
+      <h1>{{ title }}</h1>
+    </div>
+    <br/>
+    <div class = "container">
+      {% for thread in list%}
+      <a href="{{ url_for('thread', id=thread.id) }}" class="list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">{{ thread.title }}</h5>
+            <small class="text-muted">{{ thread.last_updated.strftime("%d.%m.%Y %H:%M:%S") }}</small>
+           </div>
+          <small class="text-muted">{{ thread.username }}</small>
+          </a>
+      {% endfor %}
+      <br/>
+      {% if session.user_id %}
+        <form action="/submit" method="POST">
+          <input type="hidden" name="subsection_id" value="{{ id }}">
+          <button type="submit" class="btn btn-primary">New thread</button>
+        </form>
+        {% endif %}
+    </div>
+{% endblock %}

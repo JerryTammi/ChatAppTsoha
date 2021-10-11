@@ -18,6 +18,7 @@
             <th scope="col">username</th>
             <th scope="col">is_admin</th>
             <th scope="col">banned</th>
+            <th scope="col"></th>
           </tr>
         </thead>
         <tbody>
@@ -27,6 +28,25 @@
             <td>{{ user.username }}</td>
             <td>{{ user.is_admin }}</td>
             <td>{{ user.banned }}</td>
+            {% if user.banned %}
+            <td>
+              <form action="/ban" method="POST">
+                <input type="hidden" name="user_id" value="{{ user.id }}">
+                <button type="submit" class="btn btn-success">Unban</button>
+              </form>
+            </td>
+            {% endif %}
+            {% if not user.banned and not user.is_admin %}
+            <td>
+              <form action="/ban" method="POST">
+                <input type="hidden" name="user_id" value="{{ user.id }}">
+                <button type="submit" class="btn btn-danger">Ban</button>
+              </form>
+            </td>
+            {% endif %}
+            {% if user.is_admin %}
+            <td></td>
+            {% endif %}
           </tr>
           {% endfor %}
         </tbody>
