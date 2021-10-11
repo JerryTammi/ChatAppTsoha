@@ -34,10 +34,7 @@ def login():
 		if users.login(username, password):
 			if is_user_banned():
 				return redirect("/banned")
-			list = threads.get_list_of_threads()
-			admin = users.check_if_admin(users.user_id())
-			subsections = thread_subsections.get_list_of_subsections()
-			return render_template("index.html", list_of_threads = list, admin = admin, subsections = subsections)
+			return redirect("/")
 		else:
 			error_statement = "Username and password don't match!"
 			return render_template("login.html",
@@ -154,7 +151,7 @@ def send():
 		thread_id = request.form.get("id")
 		if len(content) == 0:
 			return redirect("thread/" + str(thread_id))
-		if len(content) > 5000:
+		if len(content) > 1000:
 			return redirect("thread/" + str(thread_id))
 		if not messages.new_message(content, thread_id):
 			error_statement = "Something went wrong..."
@@ -341,7 +338,7 @@ def banned():
 		return render_template("banned.html", appeal = appeal)
 	if request.method == "POST":
 		appeal_content = request.form.get("appeal_content")
-		if len(appeal_content) == 0 or len(appeal_content) > 5000:
+		if len(appeal_content) == 0 or len(appeal_content) > 1000:
 			return redirect("/banned")
 		ban_appeals.new_appeal(appeal_content, user_id)
 		return redirect("/banned")

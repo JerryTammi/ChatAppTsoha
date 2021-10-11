@@ -29,7 +29,7 @@ def logout():
 	del session["user_id"]
 
 def user_id():
-	return session.get("user_id",0)
+	return session.get("user_id", 0)
 
 def get_username(id):
 	sql = "SELECT username FROM users WHERE id=:id"
