@@ -16,7 +16,7 @@ CREATE TABLE message_threads (
 	id SERIAL PRIMARY KEY, 
 	title TEXT, 
 	user_id INTEGER REFERENCES users, 
-	thread_subsection_id INTEGER REFERENCES thread_divisions, 
+	thread_subsection_id INTEGER REFERENCES thread_subsections, 
 	created TIMESTAMP, 
 	last_updated TIMESTAMP, 
 	deleted BOOLEAN
