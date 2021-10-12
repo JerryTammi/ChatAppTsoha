@@ -101,6 +101,8 @@ def logout():
 
 @app.route("/thread/<int:id>")
 def thread(id):
+	if is_user_banned():
+		return redirect("/banned")
 	if not threads.does_thread_exist(id):
 		error_statement = "Thread does not exist"
 		return default_homepage_with_error(error_statement)
@@ -110,10 +112,6 @@ def thread(id):
 		error_statement = "Thread not found"
 		return default_homepage_with_error(error_statement)
 	user_id = users.user_id()
-	if user_id == 0:
-		return render_template("thread.html", id=id, messages=list, thread_details = thread_details)
-	if is_user_banned():
-		return redirect("/banned")
 	return render_template("thread.html", id=id, messages=list, thread_details = thread_details)
 
 @app.route("/threadcreated", methods=["POST", "GET"])
