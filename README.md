@@ -23,5 +23,29 @@
 * Admins can view all users.
 * Admins can view all subsections and add new ones or delete existing ones.
 
+## Installation
 
- 
+The app was coded with Python 3.9.2 and PostgreSQL 13
+
+After downloading and unpacking open a command prompt in the installation foldier:
+
+* Create a virtual environment
+```
+py -m venv virtual
+```
+```
+source virtual/scripts/activate
+```
+
+* Install requirements and create the database
+```
+pip install -r requirements.txt
+```
+```
+psql < schema.sql
+```
+
+* Run the app
+```
+flask run
+```
