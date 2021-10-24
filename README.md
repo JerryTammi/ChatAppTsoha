@@ -1,12 +1,27 @@
 # ChatAppTsoha 2021
 
-## Keskeiset toiminnot
+[Heroku link](https://chatapptsoha.herokuapp.com/)
 
-* Käyttäjän luominen
-* Sisään- ja uloskirjautuminen
-* Uuden keskustelualueen luominen ja siihen osallistuminen 
-* Keskustelualueet tulevat olemaan joko julkisia tai salanasanalla suojattu
-* Hakusysteemi eri aiheille
-* Moderaattorit voivat poistaa kokonaisia palstoja ja viestejä
-* Mahdollisesti jonkinlainen jäähysysteemi jolla estetään spämmi ja epäasiallinen käytös. Tämä voi johtaa palstan ja käyttäjän poistamiseen.
+## Premade accounts
+
+* Admin user: username = adminuser, pw = password
+* Normal user: username = user, pw = password
+* Banned user: username = banneduser, pw = password
+
+## Features
+
+* Creating a user. The account can either be a normal or admin one. Obviously in a proper app there wouldn't be the option to create an admin account.
+* Logging in and out.
+* Creating a new thread and posting messages into existing threads.
+* Users can edit their own messages.
+* Threads are created within subsections.
+* Users can delete their messages and threads.
+* Admins can delete all messages and threads.
+* Search results will display all users, messages and threads that contain the criteria.
+* Admins can ban normal accounts.
+* Banned accounts can send a ban appeal that admins can approve.
+* Admins can view all users.
+* Admins can view all subsections and add new ones or delete existing ones.
+
+
  
