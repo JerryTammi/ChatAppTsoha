@@ -5,13 +5,6 @@
     <div class = "container">
       <br/>
         <div class="row">
-          <div class="col-10">
-            {% if session.user_id %}
-              <h1>{{ username }}</h1>
-            {% else %}
-              <h1>Hello world!</h1>
-            {% endif %}
-          </div>
           {% if error_statement %}
               <div class="alert alert-danger" role="alert">
                 {{ error_statement }}

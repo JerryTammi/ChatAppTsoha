@@ -11,8 +11,7 @@ def index():
 		return render_template("index.html", list_of_threads = list, subsections = subsections)
 	if is_user_banned():
 		return redirect("/banned")
-	user = users.get_username(user_id)
-	return render_template("index.html", list_of_threads = list, username = user, subsections = subsections)
+	return render_template("index.html", list_of_threads = list, subsections = subsections)
 	
 @app.route("/login", methods=["GET","POST"])
 def login():
@@ -356,9 +355,8 @@ def default_homepage_with_error(error_statement):
 	if is_user_banned():
 		return redirect("/banned")
 	else:
-		user = users.get_username(id)
 		admin = users.check_if_admin(id)
-		return render_template("index.html", list_of_threads = list, username = user, 
+		return render_template("index.html", list_of_threads = list, 
 			error_statement = error_statement, admin = admin, subsections = subsections)
 
 def check_csrf():

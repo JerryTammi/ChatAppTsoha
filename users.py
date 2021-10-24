@@ -19,15 +19,13 @@ def login(username, password):
 	user = result.fetchone()
 	if not user:
 		return False
-	else:
-		if check_password_hash(user.password, password):
-			session["user_id"] = user.id
-			session["csrf_token"] = secrets.token_hex(16)
-			if check_if_admin(user.id):
-				session["admin"] = True
-			return True
-		else:
-			return False
+	if check_password_hash(user.password, password):
+		session["user_id"] = user.id
+		session["csrf_token"] = secrets.token_hex(16)
+		if check_if_admin(user.id):
+			session["admin"] = True
+		return True
+	return False
 
 def logout():
 	if check_if_admin(user_id()):
@@ -57,7 +55,7 @@ def check_if_banned(id):
 	return banned
 
 def get_list_of_users():
-	sql = "SELECT id, username, is_admin, banned FROM users" 
+	sql = "SELECT id, username, is_admin, banned FROM users ORDER BY id" 
 	result = db.session.execute(sql)
 	return result.fetchall()
 

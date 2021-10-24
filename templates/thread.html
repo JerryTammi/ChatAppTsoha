@@ -14,7 +14,7 @@
   </div>
   {% endif %}
   <p>Thread created: {{ thread_details[0].created.strftime("%d.%m.%Y %H:%M:%S") }} by {{ thread_details[0].username }}</p>
-  {% if thread_details[0].user_id == session.user_id or admin %}
+  {% if thread_details[0].user_id == session.user_id or session.admin %}
   <form action="/deletethread" method="POST">
     <input type="hidden" name="thread_id" value="{{ id }}">
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
@@ -48,7 +48,7 @@
         {% endif %}
 
       </div>
-      {% if message.user_id == session.user_id or admin %}
+      {% if message.user_id == session.user_id or session.admin %}
       <form action="/deletemessage" method="POST">
         <input type="hidden" name="thread_id" value="{{ id }}">
         <input type="hidden" name="message_id" value="{{ message.id }}">

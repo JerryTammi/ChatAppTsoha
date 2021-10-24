@@ -12,7 +12,7 @@ def new_subsection(title):
 		return True 
 
 def get_list_of_subsections():
-	sql = "SELECT id, title, deleted FROM thread_subsections"
+	sql = "SELECT id, title, deleted FROM thread_subsections ORDER BY id"
 	result = db.session.execute(sql)
 	return result.fetchall()
 
