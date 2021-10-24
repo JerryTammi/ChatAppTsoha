@@ -29,6 +29,9 @@
               <a class="nav-link" href="{{ url_for('about')}}">Tsoha21</a>
             </li>
           </ul>
+          {% if session.user_id %}
+          <a class="nav-link" href="">{{ session.username }}</a>
+          {% endif %}
           <a class="nav-link" href="{{ url_for('search')}}">Search</a>
           {% if session.admin %}
           <a class="nav-link" href="{{ url_for('admin')}}">Admin</a>

@@ -8,10 +8,11 @@
     <div class = "container">
       <br/>
       <h1>{{ title }}</h1>
+      <p> Threads: {{ thread_count }}, Messages: {{ message_count }}</p>
     </div>
     <br/>
     <div class = "container">
-      {% for thread in list%}
+      {% for thread in list %}
       <a href="{{ url_for('thread', id=thread.id) }}" class="list-group-item list-group-item-action">
             <div class="d-flex w-100 justify-content-between">
             <h5 class="mb-1">{{ thread.title }}</h5>

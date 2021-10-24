@@ -298,12 +298,14 @@ def section(id):
 		return default_homepage_with_error(error_statement)
 	list = threads.get_threads_subsection(id)
 	title = thread_subsections.get_title(id)
+	thread_count = thread_subsections.get_thread_count(id)
+	message_count = thread_subsections.get_message_count(id)
 	user_id = users.user_id()
 	if user_id == 0:
-		return render_template("section.html", list = list, title = title)
+		return render_template("section.html", list = list, title = title, thread_count = thread_count, message_count = message_count)
 	if is_user_banned():
 		return redirect("/banned")
-	return render_template("section.html", list = list, title = title, id = id)
+	return render_template("section.html", list = list, title = title, id = id, thread_count = thread_count, message_count = message_count)
 		
 @app.route("/ban", methods = ["POST", "GET"])
 def ban():

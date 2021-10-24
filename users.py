@@ -21,6 +21,7 @@ def login(username, password):
 		return False
 	if check_password_hash(user.password, password):
 		session["user_id"] = user.id
+		session["username"] = user.username
 		session["csrf_token"] = secrets.token_hex(16)
 		if check_if_admin(user.id):
 			session["admin"] = True
@@ -30,6 +31,7 @@ def login(username, password):
 def logout():
 	if check_if_admin(user_id()):
 		del session["admin"]
+	del session["username"]
 	del session["user_id"]
 	del session["csrf_token"]
 

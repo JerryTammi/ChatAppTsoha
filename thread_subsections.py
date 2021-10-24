@@ -22,6 +22,19 @@ def get_title(id):
 	title = result.fetchone()[0]
 	return title
 
+def get_thread_count(id):
+	sql = "SELECT count(id) FROM message_threads WHERE (thread_subsection_id=:id AND deleted=False)"
+	result = db.session.execute(sql, {"id":id})
+	count = result.fetchone()[0]
+	return count
+
+def get_message_count(id):
+	sql = "SELECT count(M.id) FROM messages M, message_threads T "\
+	"WHERE (T.thread_subsection_id=:id AND M.message_thread_id=T.id AND T.deleted=False AND M.deleted=False)"
+	result = db.session.execute(sql, {"id":id})
+	count = result.fetchone()[0]
+	return count
+
 def is_deleted(id):
 	sql = "SELECT deleted FROM thread_subsections WHERE id=:id"
 	result = db.session.execute(sql, {"id":id})
