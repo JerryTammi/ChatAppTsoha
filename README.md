@@ -31,7 +31,7 @@ After downloading and unpacking open a command prompt in the installation foldie
 
 * Create a virtual environment
 ```
-py -m venv virtual
+python -m venv virtual
 ```
 ```
 source virtual/scripts/activate
